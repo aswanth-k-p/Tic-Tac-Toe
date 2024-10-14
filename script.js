@@ -28,6 +28,7 @@ buttons.forEach(button => {
 });
 
 const wincheck = () => {
+    let winnerFound = false;
     for (let pattern of win) {
         let position1val = buttons[pattern[0]].innerText;
         let position2val = buttons[pattern[1]].innerText;
@@ -36,14 +37,28 @@ const wincheck = () => {
         if (position1val && position1val === position2val && position1val === position3val) {
             displayWinner(position1val);
             disableButtons();
-            return;
+            winnerFound = true;
+            break;     
+        }
+    }
+    
+    // Check for a tie
+    if (!winnerFound) {
+        const isTie = [...buttons].every(button => button.innerText !== "");
+        if (isTie) {
+            displayTie();
         }
     }
 };
 
 const displayWinner = (winner) => {
     winnerMessage.innerText = `Winner is ${winner}`;
-    popup.style.visibility="visible"
+    popup.style.visibility = "visible";
+};
+
+const displayTie = () => {
+    winnerMessage.innerText = "It's a Tie!";
+    popup.style.visibility = "visible";
 };
 
 const disableButtons = () => {
@@ -62,12 +77,11 @@ const enableButtons = () => {
 const resetGame = () => {
     turnO = true;
     enableButtons();
-    
 };
 
 reset.addEventListener("click", resetGame);
 
-newGameButton.addEventListener("click", ()=>{
+newGameButton.addEventListener("click", () => {
     resetGame();
-    popup.style.visibility="hidden";
+    popup.style.visibility = "hidden";
 });
